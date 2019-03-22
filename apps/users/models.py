@@ -17,8 +17,8 @@ class Meta:
     verbose_name = "用户信息" #     设置UserProfle这个类的别名
     verbose_name_plural = verbose_name  # 设置别名的复数形式
 
-    def __unicode__(self):
-        return self.username  # 当使用print打印时, 把继承的username字段打印出来
+    # def __str__(self):
+    #     return self.username  # 当使用print打印时, 把继承的username字段打印出来
 
 
 
@@ -26,13 +26,15 @@ class Meta:
 class EmailVerifyRecord(models.Model):  # 邮箱验证码功能
     code = models.CharField(max_length=20, verbose_name="验证码")  # 邮箱验证码
     email = models.EmailField(max_length=50, verbose_name="邮箱")
-    send_type = models.CharField(choices=(("register", "注册"), ("forget", "找回密码")),max_length=10)  # 区分是注册时使用验证码, 还是找回密码时使用
-    send_time = models.DateTimeField(default=datetime.now)  # 验证码有时效性, 需要记录send time
+    send_type = models.CharField(choices=(("register", "注册"), ("forget", "找回密码")),max_length=10,verbose_name="发送类别")  # 区分是注册时使用验证码, 还是找回密码时使用
+    send_time = models.DateTimeField(default=datetime.now,verbose_name="发送时间")  # 验证码有时效性, 需要记录send time
 
     class Meta:
         verbose_name = "邮箱验证码"
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return '{0} ({1})'.format(self.email,self.code)
 
 
 
@@ -46,5 +48,8 @@ class Banner(models.Model):  # 主页轮播图功能
     class Meta:
         verbose_name = "轮播图"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
 
 
